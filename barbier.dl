@@ -1,0 +1,6 @@
+homme(barbier).
+homme(maire).
+
+rase(barbier,H) :- homme(H), not(rase(H,H)).
+
+est_rase(X) :- rase(barbier, X).

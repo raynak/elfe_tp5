@@ -1,0 +1,163 @@
+Question 4 :
+
+
+DES> 
+Info: Consulting /home/raynak/Universite/S6/ELFE/LOGIQUE/TP5/barbier.dl...
+  homme(barbier).
+  homme(maire).
+  rase(barbier,H) :-
+    homme(H),
+    not(rase(H,H)).
+  end_of_file.
+Info: 3 rules consulted.
+Info: Computing predicate dependency graph...
+Info: Computing strata...
+Warning: Non stratifiable program.
+
+On remarque que le programme n'est pas stratifiable.
+Le programme l'a obtenu en calculant le graphe de dépendance, puis les strates.
+
+**********************************************************************
+
+Question 5 :
+DES> rase(X,Y). 
+
+Info: Parsing query...
+Info: Query successfully parsed.
+Info: Solving query rase(X,Y)...
+Info: Computing strata...
+Warning: Unable to ensure correctness/completeness for this query.
+Info: Displaying query answer...
+Info: Sorting answer...
+{
+  rase(barbier,maire)
+}
+Info: 1 tuple computed.          
+Undefined:
+{
+  rase(barbier,barbier)
+}
+Info: 1 tuple undefined.          
+
+
+L'information prouvée vraie est la suivante :
+	"le barbier rase le maire"
+
+L'information undefined est la suivante :
+	"le barbier rase le barbier"
+Cela est illogique car le barbier ne rasant que les hommes qui ne se rasent pas eux-même, ne peux pas se raser lui-même. Mais s'il ne se rase pas lui-même, il doit se raser. Et ainsi de suite...
+
+*************************************************************************
+
+Question 6 :
+DES> /list_et 
+
+Answers:
+{
+  homme(barbier),
+  homme(maire),
+  not(rase(maire,maire)),
+  rase(barbier,maire)
+}
+Info: 4 tuples in the answer table.          
+Calls:
+{
+  homme(A),
+  not(rase(barbier,barbier)),
+  not(rase(maire,maire)),
+  rase(A,B)
+}
+Info: 4 tuples in the call table.          
+
+Des prouve les informations négatives suivantes :
+	not(rase(maire,maire)),
+	not(rase(barbier,barbier)),
+ 	 not(rase(maire,maire))
+
+rase(barbier,barbier) n'apparait pas dans la Answer Table
+
+************************************************************************
+
+Question 7
+DES> est_rase(X) 
+
+Info: Parsing query...
+Info: Query successfully parsed.
+Info: Solving query est_rase(X)...
+Info: Computing strata...
+Warning: Unable to ensure correctness/completeness for this query.
+Info: Displaying query answer...
+Info: Sorting answer...
+{
+  est_rase(barbier),
+  est_rase(maire)
+}
+Info: 2 tuples computed.          
+Undefined:
+{
+  rase(barbier,barbier)
+}
+Info: 1 tuple undefined.        
+
+Des annonce que le barbier est rasé, mais sans etre sûr de la réponse : 
+	 Unable to ensure correctness/completeness for this query.
+car rase(barbier,barbier) est undefined
+
+***********************************************************************
+
+Question 8 :
+
+chaque requête n'utilisant pas la boucle infinie est un sous-programme stratifiable.
+La requête homme(Y) renvoie
+
+Info: Stratifiable subprogram found for the given query.
+{
+  homme(barbier),
+  homme(maire)
+}
+Info: 2 tuples computed.
+
+************************************************************************
+************************************************************************
+
+Graphe
+
+
+Question 9 :
+DES> gagnant_en_un_coup(B) 
+
+{
+  gagnant_en_un_coup(3),
+  gagnant_en_un_coup(4),
+  gagnant_en_un_coup(13),
+  gagnant_en_un_coup(16)
+}
+Info: 4 tuples computed.          
+
+
+************************************************************************
+
+Question 10 
+
+DES> nonperdant2coup(S) 
+
+{
+  nonperdant2coup(3),
+  nonperdant2coup(4),
+  nonperdant2coup(5),
+  nonperdant2coup(6),
+  nonperdant2coup(7),
+  nonperdant2coup(8),
+  nonperdant2coup(9),
+  nonperdant2coup(10),
+  nonperdant2coup(11),
+  nonperdant2coup(13),
+  nonperdant2coup(16)
+}
+Info: 11 tuples computed.  
+
+*************************************************************************
+
+Nodes: [g/2,gagnant_en_un_coup/1,node/1,nonperdant2coup/1,peutgagner3coup/1]
+Arcs : [gagnant_en_un_coup/1+g/2,node/1+g/2,nonperdant2coup/1+g/2,peutgagner3coup/1+g/2,gagnant_en_un_coup/1-g/2,nonperdant2coup/1-gagnant_en_un_coup/1,peutgagner3coup/1-nonperdant2coup/1]
+

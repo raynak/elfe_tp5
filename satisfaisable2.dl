@@ -1,0 +1,21 @@
+% A and (B or (D and E)
+% devient
+% A and (B or not(not D or not E))
+
+bool(0).
+bool(1).
+
+% A
+p1(A,B,D,E) :- A=1, bool(A), bool(B), bool(D), bool(E).
+
+%not D or not E
+p2(A,B,D,E) :- D=0, bool(A), bool(B), bool(D), bool(E).
+p2(A,B,D,E) :- E=0, bool(A), bool(B), bool(D), bool(E).
+
+%B or not(not D or not E)
+p3(A,B,D,E) :- B=1, bool(A), bool(B), bool(D), bool(E).
+p3(A,B,D,E) :- bool(A), bool(B), bool(D), bool(E) ,not(p2(A,B,D,E)).
+
+r(A,B,D,E) :- p1(A,B,D,E), p3(A,B,D,E).
+
+sat(A,B,D,E) :- r(A,B,D,E), bool(A), bool(B), bool(D), bool(E).
