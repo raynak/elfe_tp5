@@ -1,6 +1,35 @@
+TP5 Elfe
+Antonin Carette
+Tanguy Maréhal
+
+Les 3 exercices du tp ont été réalisés.
+Toutefois une ambiguité persiste sur les 2 dernières questions de l'exercice sur les graphes.
+Je vous ai fait parvenir un mail, mais n'ayant pas de réponse de votre part, j'ai réalisé de 2 façons, car j'ai finalement trouvé la seconde écriture que je cherchais pour la seconde version.
+La description de l'ambiguité est décrite à la question 14.
+
+**************************************************************
+Exercice  Satisfaisabilité
+
+Question 1 : 
+voir fichier satisfaisabilite.dl
+
+******************************************************************
+
+Question 2 :
+L'alphabet comporte 5 symboles.
+Ce qui permet 2^5 combinaisons.
+La formule offre 14 solutions, soit 14/16 : un pourcentage de 87.5% de solutions valides parmi toutes les combinaisons possibles.
+
+******************************************************************
+
+Question 3 :
+voir fichier satisfaisable2.dl
+
+*****************************************************************
+*****************************************************************
+
+Exercice 2 : Analyse d'un programme non stratifiable
 Question 4 :
-
-
 DES> 
 Info: Consulting /home/raynak/Universite/S6/ELFE/LOGIQUE/TP5/barbier.dl...
   homme(barbier).
@@ -120,17 +149,17 @@ Info: 2 tuples computed.
 ************************************************************************
 ************************************************************************
 
-Graphe
+Exercice 3 : Graphe
 
 
 Question 9 :
-DES> gagnant_en_un_coup(B) 
+DES> g1c(B) 
 
 {
-  gagnant_en_un_coup(3),
-  gagnant_en_un_coup(4),
-  gagnant_en_un_coup(13),
-  gagnant_en_un_coup(16)
+  g1c(3),
+  g1c(4),
+  g1c(13),
+  g1c(16)
 }
 Info: 4 tuples computed.          
 
@@ -139,25 +168,188 @@ Info: 4 tuples computed.
 
 Question 10 
 
-DES> nonperdant2coup(S) 
-
+DES> np2c(S) 
 {
-  nonperdant2coup(3),
-  nonperdant2coup(4),
-  nonperdant2coup(5),
-  nonperdant2coup(6),
-  nonperdant2coup(7),
-  nonperdant2coup(8),
-  nonperdant2coup(9),
-  nonperdant2coup(10),
-  nonperdant2coup(11),
-  nonperdant2coup(13),
-  nonperdant2coup(16)
+  np2c(3),
+  np2c(4),
+  np2c(5),
+  np2c(6),
+  np2c(7),
+  np2c(8),
+  np2c(9),
+  np2c(10),
+  np2c(11),
+  np2c(12),
+  np2c(15)
 }
-Info: 11 tuples computed.  
+Info: 11 tuples computed.          
 
 *************************************************************************
 
-Nodes: [g/2,gagnant_en_un_coup/1,node/1,nonperdant2coup/1,peutgagner3coup/1]
-Arcs : [gagnant_en_un_coup/1+g/2,node/1+g/2,nonperdant2coup/1+g/2,peutgagner3coup/1+g/2,gagnant_en_un_coup/1-g/2,nonperdant2coup/1-gagnant_en_un_coup/1,peutgagner3coup/1-nonperdant2coup/1]
+Question 11 :
+DES> pg3c(S) 
+
+{
+  pg3c(3),
+  pg3c(5),
+  pg3c(6),
+  pg3c(9),
+  pg3c(11),
+  pg3c(12),
+  pg3c(15)
+}
+Info: 7 tuples computed.      
+
+*************************************************************************
+
+Question 12 :
+Nodes: [chemin/1,g/2,g1c/1,node/1,np2c/1,pg3c/1]
+Arcs : [chemin/1+g/2,g1c/1+g/2,node/1+g/2,np2c/1+chemin/1,np2c/1+g/2,pg3c/1+g/2,pg3c/1+g1c/1,g1c/1-chemin/1]
+
+Stratifié
+[(chemin/1,1),(g/2,1),(node/1,1),(np2c/1,1),(g1c/1,2),(pg3c/1,2)]
+
+*************************************************************************
+
+Question 13 : modèle minimal
+nommage de règles
+r1 : node(X) :- g(X,_).
+r2 : node(X) :- g(_,X).
+r3 : chemin(X) :- g(X,_).
+r4 : g1c(S) :- g(S,X), not(chemin(X)).
+r5 : np2c(A) :- g(A,B), g(B,C), chemin(C).
+r6 : pg3c(A) :- g(A,B), g(B,C), g1c(C).
+
+
+EDB
+g(3,2). g(3,17). g(4,1). g(4,3). g(4,5). g(5,17). g(5,11). g(6,4). g(6,10). g(6,7). g(7,8). g(7,10). g(8,9). g(9,11). g(9,12). g(10,5).g(11,15). g(12,13). g(13,14). g(13,16). g(15,13). g(15,16). g(16,18). g(17,16).
+--------------------------------------------------------------
+Iteration 1
+aplication des règles r1 et r2
+node(1). node(2). node(3). node(4). node(5). node(6). node(7). node(8). node(9). node(10). node(11). node(12). node(13). node(14). node(15). node(16). node(17). node(18).
+aplication de la règle r3
+chemin(3). chemin(4). chemin(5). chemin(6). chemin(7). chemin(8). chemin(9). chemin(10). chemin(11). chemin(12). chemin(13).chemin(15). chemin(6). chemin(17). 
+---------------------------------------------------------------
+Iteration 2
+application de la règle r4 (grace aux règles r1 et r3)
+g1c(3). g1c(4). g1c(13). g1c(16).
+application de la règle r5 (grace aux règles r1 et r3)
+np2c(3). np2c(4). np2c(5). np2c(6). np2c(7). np2c(8). np2c(9). np2c(10). np2c(11). np2c(12). np2c(15).
+---------------------------------------------------------------
+Iteration 3
+application de la règle r6 (grace aux règles r1 et r4)
+pg3c(3). pg3c(5). pg3c(6). pg3c(9). pg3c(11). pg3c(12). pg3c(15).
+-----------------------------------------------------------------
+Saturation
+
+
+***********************************************************************
+Question 14 :
+Subsiste donc comme annoncé au début du fichier un doute quant à la compréhension de la question.
+Faut-il comme je l'ai fait en premier créer des prédicats récursifs qui permettront de donner l'ensemble de sommets permettant de gagner avec un nombre impair de coup ?
+Ou bien un prédicat du genre gainenXcoup(S, X) qui permet de définir l'ensemble des sommets à partir desquels on peut gagner en un nombre X impair de coup ?
+
+
+%p2kplus1 : gagnant en un nombre impair de coups
+%cas de base
+p2kplus1(S) :- g1c(S).
+%recursion :
+p2kplus1(S) :- g(S,X), g(X,Y), p2kplus1(Y).
+
+Il n'y aucune négation pour déterminer l'ensemble des solutions
+Les programmes sont donc tous de strate 1
+
+***********************************************************************
+Question 15 :
+De même que pour les gagnants en nombre impair de coup, pour l'ensemble des sommets à partir desquels il est possbile de gagner, n'utilisant aucune négation, ils sont tous de strate 1
+
+
+***************
+Seconde version
+***************
+Voir le fichier .dl
+Dans cette version, j'ai défini un ensemble de prédicats sous la forme 
+gain(S, N) : S étant le sommet de départ et N le nombre de coup pour gagner.
+La récursivité permet une écriture simple de la solution.
+Cela permet d'obtenir 3 sortes de résultats selon la requête fournie :
+
+gaintotal(S, 4) fournit l'ensemble des sommets à partir desquels on peut gagner en 4 coups
+DES> gaintotal(S, 4) 
+
+{
+  gaintotal(4,4),
+  gaintotal(5,4),
+  gaintotal(6,4),
+  gaintotal(7,4),
+  gaintotal(8,4),
+  gaintotal(9,4),
+  gaintotal(10,4),
+  gaintotal(11,4)
+}
+Info: 8 tuples computed.   
+ 
+
+gaintotal(3, N) fournit l'ensemble des nombres de coups possibles pour gagner à partir de ce sommets
+DES> gaintotal(3, N) 
+
+{
+  gaintotal(3,1),
+  gaintotal(3,3)
+}
+Info: 2 tuples computed.  
+
+
+gaintotal(S, N) fournit l'ensembe des solutions pour gagner au jeu (un sommet et le nombre de coups avec lequel on peut gagner)
+
+DES> gaintotal(S,N) 
+
+{
+  gaintotal(3,1),
+  gaintotal(3,3),
+  gaintotal(4,1),
+  gaintotal(4,2),
+  gaintotal(4,4),
+  gaintotal(4,5),
+  gaintotal(4,6),
+  gaintotal(5,2),
+  gaintotal(5,3),
+  gaintotal(5,4),
+  gaintotal(5,5),
+  gaintotal(6,2),
+  gaintotal(6,3),
+  gaintotal(6,4),
+  gaintotal(6,5),
+  gaintotal(6,6),
+  gaintotal(6,7),
+  gaintotal(6,8),
+  gaintotal(7,2),
+  gaintotal(7,4),
+  gaintotal(7,5),
+  gaintotal(7,6),
+  gaintotal(7,7),
+  gaintotal(8,2),
+  gaintotal(8,4),
+  gaintotal(8,5),
+  gaintotal(8,6),
+  gaintotal(9,2),
+  gaintotal(9,3),
+  gaintotal(9,4),
+  gaintotal(9,5),
+  gaintotal(10,2),
+  gaintotal(10,4),
+  gaintotal(10,5),
+  gaintotal(10,6),
+  gaintotal(11,2),
+  gaintotal(11,3),
+  gaintotal(11,4),
+  gaintotal(12,2),
+  gaintotal(12,3),
+  gaintotal(13,1),
+  gaintotal(13,2),
+  gaintotal(15,2),
+  gaintotal(15,3),
+  gaintotal(16,1),
+  gaintotal(17,2)
+}
+Info: 46 tuples computed.          
 

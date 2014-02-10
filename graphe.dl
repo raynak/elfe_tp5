@@ -23,14 +23,57 @@ g(15,16).
 g(16,18).
 g(17,16).
 
+
 node(X) :- g(X,_).
 node(X) :- g(_,X).
 
-%gagnant en un coup
-gagnant_en_un_coup(S) :- g(S,X), not(g(X,_)).
+%predicat qui permet d'éviter l'erreur si l'on ecrit le prédicat g1c :- g(S,X), not(g(X,_)).
+chemin(X) :- g(X,_).
 
-%non perdant après 2 coup
-nonperdant2coup(S) :- g(S,X), not(gagnant_en_un_coup(X)).
+%gagnant en un coup
+g1c(S) :- g(S,X), not(chemin(X)).
+
+%non perdant après 2 coup.
+np2c(A) :- g(A,B), g(B,C), chemin(C).
+
 
 %peut gagner en 3 coup
-peutgagner3coup(S) :- g(S,X), not(nonperdant2coup(X)).
+%peutgagner3coup(S) :- g(S,X), not(nonperdant2coup(X)).
+pg3c(A) :- g(A,B), g(B,C), g1c(C).
+
+%p2kplus1 : gagnat en un nombre impair de coups
+%cas de base
+p2kplus1(S) :- g1c(S).
+%recursion :
+p2kplus1(S) :- g(S,X), g(X,Y), p2kplus1(Y).
+
+%gagnant en un nombre pair de coups
+%cas de base : gain en 2 coups
+g2c(A) :- g(A,B), g1c(B).
+%cas général
+g2c(A) :- g(A,B), g(B,C), g2c(C).
+
+%gagnant : tous les points à partir desquels il est possible de gagner
+gagnant(S) :- p2kplus1(S).
+gagnant(S) :- g2c(S).
+
+
+%gestion des questions 14 et 15 d'un autre point de vue
+%pour un nombre de coup impair
+%cas de base
+gainimpair(S, 1) :- g1c(S).
+%cas général
+gainimpair(S, N1) :- g(S,X), g(X,Y), gainimpair(Y, N2), N1 is (N2+2).
+
+%pour un nombre pair
+%on rédefinit le cas de base g2c sous un autre prédicat car il interfère et ne donne pas les bon résultats
+gainpairbase(A) :- g(A,B), g1c(B).
+%cas de base
+gainpair(S, 2) :- g2c(S).
+%cas général
+gainpair(S, N1) :- g(S,X), g(X,Y), gainpair(Y, N2), N1 is (N2+2).
+
+
+%pour tout nombre de coup
+gaintotal(S, N) :- gainimpair(S, N).
+gaintotal(S, N) :- gainpair(S, N).
